@@ -1,0 +1,41 @@
+1>Essentially, a closure is a block of code that can be passed as an argument to a function call, which will execute the block immediately or some time later. To some extent, a closure is similar to an unnamed (or anonymous) function. There is more to it, but for the time being, let us stick to this definition.
+
+2>To better understand the purpose of closures, consider a simple example of a situation where you would want to pass a block of code to another function for repeated execution: a method forEach that takes a sequence of objects is supposed to apply a given functionality to every object in the sequence. 
+3>How would you pass the functionality to the forEach method? 
+Today in Java, you would have to define an interface, say Block, and pass implementations of that interface to the forEach method, as shown in Listing 1.
+
+
+Listing 1. Java programming without closures
+
+public interface Block<T> {
+      void invoke(T arg);
+    }
+    public class Utils {
+      public static <T> void forEach(Iterable<T> seq, Block<T> fct) {
+        for (T elm : seq)
+        fct.invoke(elm);
+      }
+    }
+    public class Test {
+      public static void main(String[] args) {
+        List<Integer> nums = Arrays.asList(1,2,3);
+        Block<Integer> print = new Block<Integer>() {
+          public void invoke(Integer arg) {
+            System.out.println(arg);
+          }
+        };
+        Utils.forEach(nums,print);
+      }
+    }
+
+
+4>The example is admittedly contrived and extremely simple, but consider it: how often in Java do you find yourself implementing an interface and passing the implementation to a method for execution? We can think of three immediate examples:
+
+5>
+i>Runnable and Callable, which we pass to threads or thread pools for asynchronous execution.
+ii>Callback interfaces such as ActionListener, which we register for future execution in case a certain event occurs.
+iii>Comparator, which we pass to a TreeMap for maintaining its sorting order.
+
+6>In all these cases we use an interface, providing some functionality as an implementation of the interface. We then pass the functionality to a method for immediate or delayed, synchronous or asynchronous execution. Closures would simplify this process by allowing a more concise syntax, thereby eliminating some of Java's verbosity. Beyond allowing more concise and readable Java source code, closures would add some functionality completely new to Java, such as custom control structures, which we explain later in the article.
+
+
