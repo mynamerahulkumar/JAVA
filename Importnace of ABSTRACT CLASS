@@ -1,0 +1,113 @@
+1>Though there are lot of difference between abstract class and interface, key thing to remember is that they both provides abstraction.
+
+2>Let's take an example, you need to design a program, which can produce reports for employees e.g. how many hours they worked and how much they are paid every month. Let's assume that currently your organization only has permanent employees, which are paid monthly. You know that and you write code based upon that, after sometime your company started recruiting contract employees, which are paid at hourly rate rather than monthly salary. Now, if you need to rewrite your program to support this, they your program is not flexible enough. On the other hand, if you just needs to write some code to plug this new type of employee into system, they your program is very much flexible and maintainable. If you would have known about abstract class, you would have made Employee an abstract class and methods like salary() abstract, because that is what varies between different types of employees. Now introducing a new type of Employee would be cake walk, all you need to do is to create another subclass of Employee to represent ContractEmployee, and their salary method return salary based upon number of hours they had worked multiplied by their hourly rate. So, you get the idea right, we code at certain level of abstraction, which allows us to accommodate new changes in our system.
+
+3>2nd EXAMPLE
+Let's see another example of abstract class and method, this one is rather tasty examples. I love fruits, they are tasty, provides vitamins and you don't need to cook them to eat. All you do, you take a fruit, wash them then you either cut them, or peel them before eating. Our example is based on this behaviour. We have created an abstract class Fruit, which contains some concrete behaviour like colour, whether its a seasonal fruit or not, and abstract behaviour called prepare(). In order to server fruits, we need to prepare them for eating, which involves either cutting them in slices or peel them. We have two concrete implementation of Fruit class, Mango and Banana, I chose these two because, first they are my favourites and second they have different methods of preparing them. You cut mangoes but you peel bananas.
+
+code:
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * Java Program to demonstrate what is abstract class and abstract method in Java, how to use
+ * them, when to use them with a practical example.
+ *
+ * @author Javin Paul
+ */
+public class AbstractClassDemo{
+
+    public static void main(String args[]) {
+        Fruit mango = new Mango(Color.YELLOW, true); // mango is seasonal
+        Fruit banana = new Banana(Color.YELLOW, false); // banana is not seasonal
+
+        List&lt;Fruit&gt; platter = new ArrayList&lt;Fruit&gt;();
+        platter.add(mango);
+        platter.add(banana);
+        serve(platter);
+    }
+
+    public static void serve(Collection&lt;Fruit&gt; fruits) {
+        System.out.println("Preparing fruits to serve");
+        for (Fruit f : fruits) {
+            f.prepare();
+        }
+    }
+}
+
+
+/*
+ * Abstract class to represent Fruit, defined only essential
+ * properties of Fruit here and make things abstract which
+ * is different for different fruits.
+ */
+abstract class Fruit {
+    private Color color;
+    private boolean seasonal;
+
+    public Fruit(Color color, boolean seasonal) {
+        this.color = color;
+        this.seasonal = seasonal;
+    }
+
+   /*
+    * This is an abstract method, see it doesn't have method body, only declaration
+    */
+    public abstract void prepare();
+
+    public Color getColor() {
+        return color;
+    }
+
+    public boolean isSeasonal() {
+        return seasonal;
+    }
+}
+
+
+/*
+ * A concrete class to extend Fruit, since Mango IS-A Fruit
+ * extending Fruit is justified. it got all properties of
+ * fruit, and it defines how to prepare mango for eating.
+ */
+class Mango extends Fruit {
+
+    public Mango(Color color, boolean seasonal) {
+        super(color, seasonal);
+    }
+
+    @Override
+    public void prepare() {
+        System.out.println("Cut the Mango");
+    }
+}
+
+
+/*
+ * Another concrete class to extend Fruit.
+ */
+class Banana extends Fruit {
+
+    public Banana(Color color, boolean seasonal) {
+        super(color, seasonal);
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public void prepare() {
+        System.out.println("Peal the Banana");
+    }
+}
+
+Output:
+Preparing fruits to serve
+Cut the Mango
+Peal the Banana
+
+
+NOTE:That's all about Abstract class in Java. Always remember that anything abstract (e.g. abstract class or abstract method) is not complete in Java, and you must extend abstract class and override abstract method to make use of that class. Remember, Abstraction is very important to design flexible systems. Flexibility comes from using interfaces and abstract class at top level and leverage inheritance and Polymorphism to supply different implementation without changing the code which uses them.
+
+
+Read more: http://www.java67.com/2014/06/why-abstract-class-is-important-in-java.html#ixzz4RfO19wXo
